@@ -8,10 +8,15 @@ How to use:
 First of all, you need a working snappyHexMesh case, meaning you have a (nearly) watertight .stl in triSurface, a correct surfaceFeatureExtractDict, a correct blockMeshDict, decomposeParDict and finally a working snappyHexMeshDict. This is the workflow we also use in the exec_meshing() function inside this script. After meshing, the mesh is reconstructed and processor/ folders are cleaned. Of course, if you need createBaffles or mergeOrSplitBaffles or other operations on your mesh, these can easily be included. 
 An important feature of this script is, that some of the logging is done in /var/tmp/. My advice for you is to mount it as tmpfs in order to have it in RAM. It will reduce the write cycles on your SSD or NVME.
 After you completed setting up the meshing, you are ready to enter data in to the script. Currently, the following parameters can be varied for automated mesh generation:
+
 -) NUMBER_OPTIMIZATIONS: the total number of loops, then number of meshes is +1 because the original intention was to let the script optimize mesh parameters itself. This has proven to be very difficult. So at the moment, only a few parameters are varied and also this script can't to any separate meshing. Separate meshing is a popular tecnique ith snappyHexMEsh where you mesh your snapped mesh first until satisfied and THEN do the layering on this mesh. I only discovered this weeks ago, it has been a good alternative so far (although some other annoying stuff has to be done to get this mesh running in OpenFOAM, but I won't go into that.)
+
 -) interval_maxNonOrtho: set the interval in which maxNonOrtho is varied. The following variations of maxNonOrtho can be performed: do equal steps along the given interval, do quasi-equal steps in the interval with slight randomization on the value, total uniform randomness of the value in the interval. You can comment and uncomment the appropriate lines in the code.
+
 -) interval_maxBoundarySkewness: set the interval in which maxBoundarySkewness is varied. Same applies like above on how this parameter can be varied.
+
 -) interval_layerFeatureAngle: set the interval in which layerFeatureAngle is varied. Same applies like above on how this parameter can be varied.
+
 
 The following input parameters are also included but not varied currently in the script (this is also mentioned in the script) only their maximum value is used and written to snappyHexMeshDict:
 
