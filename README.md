@@ -54,6 +54,8 @@ cellShapes       faceWeight       nut            wallDistance
 
 Executing paraFoam will let you look at all these data and generated meshes. All logs can be looked into for a deeper comparison.
 A graph is presented in the end with the most important parameters for each mesh (again according to their number 0, 1, 2, 3, ...):
+![Figure_1](https://github.com/user-attachments/assets/7741f9f3-f047-4021-abaf-adf32228e9bc)
+
 
 maxNonOrtho_set
 
