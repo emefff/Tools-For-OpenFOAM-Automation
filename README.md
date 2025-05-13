@@ -63,7 +63,7 @@ num_cells_result
 
 You will be able to choose the mesh you like best, very often this will be a compromise with snappyHexMesh. Even if you don't choose a mesh for your simulation, you'll know a lot more about how sHM is treating your .stl.
 You can narrow one or more parameter interval(s) for additional loops, modify other parameters in sHM etc. This script is especially convenient, if you absolutely don't know where to start with your meshing.
-
+Now, this is always work in progress. At the moment, the capabilities of this script are quite limited. However, it can be adapted to your needs in no time. The main advantage at the moment is that we can do some meshing during the night. 
 
 
 
