@@ -14,36 +14,56 @@ After you completed setting up the meshing, you are ready to enter data in to th
 -) interval_layerFeatureAngle: set the interval in which layerFeatureAngle is varied. Same applies like above on how this parameter can be varied.
 
 The following input parameters are also included but not varied currently in the script (this is also mentioned in the script) only their maximum value is used and written to snappyHexMeshDict:
+
 interval_maxInternalSkewness
+
 interval_relaxedMaxNonOrtho
+
 interval_relaxedMaxBoundarySkewness
+
 interval_relaxedMaxInternalSkewness
+
 
 When you have entered your desired limits in these intervals, you should look at how these values are treated (equal linear steps, quasi-equal steps or uniform randomness). Just comment and uncomment the appropriate lines in the loop. You may also want to change the direction in which the intervals are stepped in case of equal and quasi-equal steps.
 After that you may run the script, it should be placed in your OpenFoam case directory. After the zero mesh (Mesh_0) it will tell you an estimated meshing time, especially with big meshes this is important.
 
 The following files are written by the script:
 A folder is created for each mesh in the constant directory of your OpenFoam case with the following structure, let's assume a NUMBER_OPTIMIZATIONS = 3:
+
 Mesh_0/ Mesh_1/ Mesh_2/ Mesh_3/
 
 Inside each of these folders you'll find (assume we look into Mesh_0):
+
 0/    cellVolume       faceZone       p
+
 aspectRatio      cellVolumeRatio  k              polyMesh/
+
 cellAspectRatio  cellZone         minPyrVolume   skewness
+
 cellDeterminant  checkMesh_0.log  minTetVolume   snappyHexMesh_0.log
+
 cellRegion       epsilon          nonOrthoAngle  U
+
 cellShapes       faceWeight       nut            wallDistance
+
 
 Executing paraFoam will let you look at all these data and generated meshes. All logs can be looked into for a deeper comparison.
 A graph is presented in the end with the most important parameters for each mesh (again according to their number 0, 1, 2, 3, ...):
 
 maxNonOrtho_set
+
 maxNonOrtho_result
+
 maxSkewness_set
+
 maxSkewness_result
+
 layerFeatureAngle_set
+
 layerPercentage_result (only the first entry from the first patch in the table is scanned)
+
 num_cells_result
+
 
 You will be able to choose the mesh you like best, very often this will be a compromise with snappyHexMesh. Even if you don't choose a mesh for your simulation, you'll know a lot more about how sHM is treating your .stl.
 You can narrow one or more parameter interval(s) for additional loops, modify other parameters in sHM etc. This script is especially convenient, if you absolutely don't know where to start with your meshing.
