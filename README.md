@@ -56,14 +56,10 @@ Executing paraFoam will let you look at all these data and generated meshes. All
 A graph is presented in the end with the most important parameters for each mesh (again according to their number 0, 1, 2, 3, ...):
 ![Figure_1](https://github.com/user-attachments/assets/7741f9f3-f047-4021-abaf-adf32228e9bc)
 
-maxNonOrtho_set
-maxNonOrtho_result
-maxSkewness_set
-maxSkewness_result
-layerFeatureAngle_set
-layerPercentage_result (only the first entry from the first patch in the table is scanned)
+maxNonOrtho_set, maxNonOrtho_result
+maxSkewness_set, maxSkewness_result
+layerFeatureAngle_set, layerPercentage_result (only the first entry from the first patch in the table is scanned)
 num_cells_result
-
 
 You will be able to choose the mesh you like best, very often this will be a compromise with snappyHexMesh. Even if you don't choose a mesh for your simulation, you'll know a lot more about how sHM is treating your .stl.
 You can narrow one or more parameter interval(s) for additional loops, modify other parameters in sHM etc. This script is especially convenient, if you absolutely don't know where to start with your meshing.
