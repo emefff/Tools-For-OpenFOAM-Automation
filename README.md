@@ -73,6 +73,7 @@ Now, this is work in progress. At the moment, the capabilities of this script ar
 ## controlDict_automation.py
 
 When I started with OpenFOAM, I was very annoyed by the need of sitting and waiting while increasing certain parameters (e.g. timeStep or maxCo) after launching a new simulation. So what this script basically does is hand a little more automation to your simulation. It can:
+
 -) increase maxCo either by a time trigger, meaning for example in 10 steps from 0.0001 to 0.5 in 10 minute intervals.
 
 -) increase maxCo by a timeStep trigger. For that we extract the timeStep at whic the running simulation is at, we the increase (mostly) the maxCo according to a list of values we determined in advance.
@@ -89,7 +90,9 @@ When I started with OpenFOAM, I was very annoyed by the need of sitting and wait
 
 -) calculate the achieved deltaT. PimpleFoam shows us this value during the run, we only have access to it via stdout in the running simulation. This script calculated this value from solverInfo
 
--) writes collected data and results into a controlDict_automation_results.csv. Restarting this script will trigger it to write new data to controlDict_automation_results_1.csv and so on. These data can be evaluated by control_automation_plot.py script which is also presented here. The plotting script can handle the enumrated result.csv files. No worries here.
+-) write collected data and results into a controlDict_automation_results.csv. Restarting this script will trigger it to write new data to controlDict_automation_results_1.csv and so on. These data can be evaluated by control_automation_plot.py script which is also presented here. The plotting script can handle the enumrated result.csv files. No worries here.
+
+-) write a log file named controlDict_automation.log. It also enumerates log files if you interrupt the script similiar to the result.csv files.
 
 The script features a lot of functions to access OpenFOAM parameters, it can easily be adapted to other needs. 
 
