@@ -69,6 +69,7 @@ You will be able to choose the mesh you like best, very often this will be a com
 You can narrow one or more parameter interval(s) for additional loops, modify other parameters in sHM etc. This script is especially convenient, if you absolutely don't know where to start with your meshing.
 Now, this is work in progress. At the moment, the capabilities of this script are quite limited. However, it can be adapted to your needs in no time. The main advantage at the moment is that we can do some meshing over night. 
 
+
 ## controlDict_automation.py
 
 When I started with OpenFOAM, I was very annoyed by the need of sitting and waiting while increasing certain parameters (e.g. timeStep or maxCo) after launching a new simulation. So what this script basically does is hand a little more automation to your simulation. It can:
@@ -112,6 +113,7 @@ functions
 ```
 If this function is not present in your controlDict, it will be added.
 For other solvers, the script may need to be adapted, currently it is written for pimpleFoam. For the script to work, it needs to nbe run in your case directory.
+
 
 ## controlDict_automation_plot.py
 
