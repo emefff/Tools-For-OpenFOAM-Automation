@@ -77,7 +77,7 @@ When I started with OpenFOAM, I was very annoyed by the need of sitting and wait
 
 -) increase writeInterval: in the beginning when timeSteps are small, we probably want to write smaller timeSteps and later, when all is going well with a large timeStep we want to write less data.
 
--) increase nCorrectors when maxCo is increased. 
+-) increase nCorrectors when maxCo is increased and decrease it when a certain percentage of the timeStep is reached.
 
 -) increase nCorrectors, nOuterCorrectors, decrease epsilonRelaxationFactor when p does not converge. Although the script can do that, I have never seen an event when it actually can 'save' a non-converging simulation. It is probably already too late when this is triggered.
 
@@ -92,7 +92,7 @@ When I started with OpenFOAM, I was very annoyed by the need of sitting and wait
 Like already mentioned above, this script visualizes the results collected by controlDict_automation.py. A typical result may look like this:
 ![controlDict_automation_75](https://github.com/user-attachments/assets/5d869941-10c0-4b51-9a5e-d68ebe145468)
 
-Looking at the results we may judge if if our simulation reaches a dead end (for example deltaT could approach unsustainable values) or how it behaves in general.
+Looking at the results we may judge if if our simulation reaches a dead end (for example deltaT could approach unsustainable values) or how it behaves in general. In this example, these are the results from the also shared Francis turbine, we obviously increased maxCo and at the same time nCorrectors. We decreased nCorrectors after 1.01*timeStep_maxCo has passed (this is decrease_nCorrectors_factor). 
 
 
 
