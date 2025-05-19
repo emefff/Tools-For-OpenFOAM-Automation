@@ -128,7 +128,7 @@ This is an easy one. In fact, all the above scripts somehow started with this sc
 A typical plot could look like this, in fact it is again from the Francis turbine at the same timeStep:
 ![solverInfo_75](https://github.com/user-attachments/assets/469c07c0-f824-4d11-b5fd-9d0a90e936da)
 
-Steady residuals, and residuals die down after increasing maxCo/timeStep. What else do we need in CFD?
+Steady residuals, and residuals are fading down after increasing maxCo/timeStep. What else do we need in CFD?
 
 
 
