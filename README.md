@@ -103,7 +103,7 @@ functions
         executeControl      timeStep;
         executeInterval     1;
         writeControl        adjustableRunTime;
-        writeInterval       25;// lower at the beginning...
+        writeInterval       25;
     }
 }
 ```
