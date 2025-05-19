@@ -96,7 +96,7 @@ When I started with OpenFOAM, I was very annoyed by the need of sitting and wait
 
 The script features a lot of functions to access OpenFOAM parameters, it can easily be adapted to other needs. 
 
-It needs a function implemented in the controldict like:
+It needs a function implemented in the controlDict like:
 
 ```
 functions
