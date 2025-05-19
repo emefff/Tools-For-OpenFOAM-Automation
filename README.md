@@ -1,9 +1,9 @@
 # Tools-For-OpenFOAM-Automation
-## snappyHexMesh_Optimizer.py
+## snappyHexMesh_Batch_Mesher.py
 
 As all Foamers know, OpenFOAM is top-tier CFD software. Nevertheless, 'ease-of-use' or even 'convenience' are words that normally do not come to mind when we speak about OpenFOAM. There are tools like pyFOAM that may achieve similar control over openFOAM, however, I wanted to do this on my own.
-First of all, a good mesh is the most important input to OF. My personal mesher of choice is snappyHexMesh. There has been a lot said about sHM, I won't add to that. My experiences with it are mixed, but there is no open-source mesher that can handle multiregion or AMI better. So I have to deal with it. The problems I have with it are mostly with big meshes (5M+ cells) and the waiting time. Even with MPI and 32 cores, a waiting time of 1h+ is too long if you can't be sure your resulting mesh works. And that's the main problem with sHM: you never really can be with AMI because SHM is kind of stochastic (maybe there's a better word for it, IDK) regarding its results. What do I mean by that? Even with IDENTICAL snappyHexMeshDict, a second meshing run does not lead to exactly the same result. There are variations in the mesh, they are only 'kind of' the same. They even have different checkMesh results, that should tell you something. Normally, when meshing a new geometry, I'd start with some default parameters, look at checkMesh results and also look at the snappyHexMEsh.log. Unfortunately, checkMesh can't do it all. The most important value (in my opinion at leat) checkMesh cannot deliver us is the layerPercentage (not an official OF-name). These values, if you layer more than one patch, can only be found in sHM.log. So, therefore, one of the goals of the presented software was to aggregate important meshQualityParameters in one place. 
-Currently this script can only do variations of input parameters for snappyHexMeshDict, repeatedly mesh in parallel, write logs, evaluate some results in these logs and aggregate the info for the user. Ideally, the user will then pick one of these meshes for his simulation. In that sense, it is not an optimizer. Attempts to do automated optimizations where not really fruitful, so at the moment we just kind of brute-force a better mesh with variations of important parameters and repeated meshing.
+First of all, a good mesh is the most important input to OF. My personal mesher of choice is snappyHexMesh. There has been a lot said about sHM, I won't add to that. My experiences with it are mixed, but there is no open-source mesher that can handle multiregion or AMI better. So I have to deal with it. The problems I have with it are mostly with big meshes (10M+ cells) and the waiting time. Even with MPI and 32 cores, a waiting time of 1h+ is too long if you can't be sure your resulting mesh works. And that's the main problem with sHM: you never really can be with AMI because SHM is kind of stochastic (maybe there's a better word for it, IDK) regarding its results. What do I mean by that? Even with IDENTICAL snappyHexMeshDict, a second meshing run does not lead to exactly the same result. There are variations in the mesh, they are only 'kind of' the same. They even have different checkMesh results, that should tell you something. Normally, when meshing a new geometry, I'd start with some default parameters, look at checkMesh results and also look at the snappyHexMEsh.log. Unfortunately, checkMesh can't do it all. The most important value (in my opinion at least) checkMesh cannot deliver us is the layerPercentage (not an official OF-name). These values, if you layer more than one patch, can only be found in sHM.log. So, therefore, one of the goals of the presented software was to aggregate important meshQualityParameters in one place. 
+Currently this script can only do variations of input parameters for snappyHexMeshDict, repeatedly mesh in parallel, write logs, evaluate some results in these logs and aggregate the info for the user. Ideally, the user will then pick one of these meshes for his simulation. Attempts to do automated optimizations where not really fruitful, so at the moment we just kind of brute-force a better mesh with variations of important parameters and repeated meshing.
 
 How to use this script:
 First of all, you need a working snappyHexMesh case, meaning you have a (nearly) watertight .stl in triSurface, a correct surfaceFeatureExtractDict, a correct blockMeshDict, decomposeParDict and finally a working snappyHexMeshDict. This is the workflow we also use in the exec_meshing() function inside this script. After meshing, the mesh is reconstructed and processor/ folders are cleaned. Of course, if you need createBaffles or mergeOrSplitBaffles or other operations on your mesh, these can easily be included. 
@@ -64,7 +64,29 @@ num_cells_result
 
 You will be able to choose the mesh you like best, very often this will be a compromise with snappyHexMesh. Even if you don't choose a mesh for your simulation, you'll know a lot more about how sHM is treating your .stl.
 You can narrow one or more parameter interval(s) for additional loops, modify other parameters in sHM etc. This script is especially convenient, if you absolutely don't know where to start with your meshing.
-Now, this is always work in progress. At the moment, the capabilities of this script are quite limited. However, it can be adapted to your needs in no time. The main advantage at the moment is that we can do some meshing during the night. 
+Now, this is work in progress. At the moment, the capabilities of this script are quite limited. However, it can be adapted to your needs in no time. The main advantage at the moment is that we can do some meshing over night. 
+
+## controlDict_automation.py
+
+When I started with OpenFOAM, I was very annoyed by the need of sitting and waiting while increasing certain parameters (e.g. timeStep or maxCo) after launching a new simulation. So what this script basically does is hand a little more automation to your simulation. It can:
+-) increase maxCo either by a time trigger, meaning for example in 10 steps from 0.0001 to 0.5 in 10 minute intervals.
+
+-) increase maxCo by a timeStep trigger. For that we extract the timeStep at whic the running simulation is at, we the increase (mostly) the maxCo according to a list of values we determined in advance.
+
+-) or we use both. This is done in the shared script. In the beginning we use a time trigger and later we switch over to timeStep triggering. This mostly makes sense in very big simulations. 
+
+-) increase writeInterval: in the beginning when timeSteps are small, we probably want to write smaller timeSteps and later, when all is going well with a large timeStep we want to write less data.
+
+-) increase nCorrectors when maxCo is increased. 
+
+-) increase nCorrectors, nOuterCorrectors, decrease epsilonRelaxationFactor when p does not converge. Although the script can do that, I have never seen an event when it actually can 'save' a non-converging simulation. It is probably already too late when this is triggered.
+
+-) decrease nCorrectors, nOuterCorrectors, increase epsilonRelaxationFactor when last 30 timeSteps show converged pressure. When all is going well, all these parameters are decreased to their defined minimum values to keep iteration duration low.
+
+-) calculate the achieved deltaT. PimpleFoam shows us this value during the run, we only have access to it via stdout in the running simulation. This script calculated this value from solverInfo
+
+-) writes collected data and results into a controlDict_automation_results.csv. Restarting this script will trigger it to write new data to controlDict_automation_results_1.csv and so on. These data can be evaluated by control_automation_plot.py script which is also presented here. The plotting script can handle the enumrated result.csv files. No worries here.
+
 
 
 
