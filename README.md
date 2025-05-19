@@ -87,12 +87,33 @@ When I started with OpenFOAM, I was very annoyed by the need of sitting and wait
 
 -) writes collected data and results into a controlDict_automation_results.csv. Restarting this script will trigger it to write new data to controlDict_automation_results_1.csv and so on. These data can be evaluated by control_automation_plot.py script which is also presented here. The plotting script can handle the enumrated result.csv files. No worries here.
 
+The script features a lot of functions to access OpenFOAM parameters, it can easily be adapted to other needs. 
+
+It needs a function implemented in the controldict like:
+>functions
+{
+    solverInfo
+    {
+        type            solverInfo;
+        libs            ("libutilityFunctionObjects.so");
+        fields          (U p);
+        writeResidualFields yes;
+        executeControl      timeStep;
+        executeInterval     1;
+        writeControl        adjustableRunTime;
+        writeInterval       25;// lower at the beginning...
+    }
+}
+
+For other solvers, the script may need to be adapted, currently it is written for pimpleFoam. 
+
 ## controlDict_automation_plot.py
 
 Like already mentioned above, this script visualizes the results collected by controlDict_automation.py. A typical result may look like this:
 ![controlDict_automation_75](https://github.com/user-attachments/assets/5d869941-10c0-4b51-9a5e-d68ebe145468)
 
 Looking at the results we may judge if if our simulation reaches a dead end (for example deltaT could approach unsustainable values) or how it behaves in general. In this example, these are the results from the also shared Francis turbine, we obviously increased maxCo and at the same time nCorrectors. We decreased nCorrectors after 1.01*timeStep_maxCo has passed (this is decrease_nCorrectors_factor). 
+Looking at achieved_deltaT we clearly find a linear increase after the last change of maxCo. This is a transient simulation with constant maxCo, so an increasing deltaT is a good sign (initial transients are still fading away). 
 
 
 
