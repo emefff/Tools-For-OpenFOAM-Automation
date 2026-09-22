@@ -142,7 +142,8 @@ Editing OpenFOAM input files in system/ constant/ 0.orig/ etc. can be tedious wo
 
 Example of maxCo increase:
 
->================================================
+```
+================================================
 [2026-09-22 09:54:01] Modified: system/controlDict
 ================================================
 --- /tmp/inotify_snapshot/system/controlDict	2026-09-22 09:52:00.980270259 +0200
@@ -170,6 +171,10 @@ Example of maxCo increase:
 +maxCo           0.000157784;
  
  maxDi           1;
+```
+
+emefff@gmx.at
+
 
 
 
