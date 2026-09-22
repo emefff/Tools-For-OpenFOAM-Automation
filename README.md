@@ -136,6 +136,40 @@ A typical plot could look like this, in fact it is again from the Francis turbin
 
 Steady residuals, and residuals are fading down after increasing maxCo/deltaT. What else do we need in CFD?
 
+## inotify_launch.sh
+
+Editing OpenFOAM input files in system/ constant/ 0.orig/ etc. can be tedious work, especially when you have to modify a lot. Keeping track of the changes is essential. I mostly did this by hand in a README.txt file or similar. With this script, this isn't necessary anymore. Launch it in your OpenFOAM folder BEFORE you start modifying. It will keep track and write a file like "changes_2026-09-22_09-18-27.log" with the current date and time. The style is similar to Github diff files.
+
+Example of maxCo increase:
+
+>================================================
+[2026-09-22 09:54:01] Modified: system/controlDict
+================================================
+--- /tmp/inotify_snapshot/system/controlDict	2026-09-22 09:52:00.980270259 +0200
++++ /media/drive2/OpenFOAMProjects/casting_propeller_5_chtMRTwoPhaseEulerFoam_SNAPPED/system/controlDict	2026-09-22 09:54:01.062275593 +0200
+@@ -44,7 +44,7 @@
+ 
+ runTimeModifiable yes;
+ 
+-maxCo           0.000116418;
++maxCo           0.000135532;
+ 
+ maxDi           1;
+ 
+
+================================================
+[2026-09-22 09:56:01] Modified: system/controlDict
+================================================
+--- /tmp/inotify_snapshot/system/controlDict	2026-09-22 09:54:01.062275593 +0200
++++ /media/drive2/OpenFOAMProjects/casting_propeller_5_chtMRTwoPhaseEulerFoam_SNAPPED/system/controlDict	2026-09-22 09:56:01.177280928 +0200
+@@ -44,7 +44,7 @@
+ 
+ runTimeModifiable yes;
+ 
+-maxCo           0.000135532;
++maxCo           0.000157784;
+ 
+ maxDi           1;
 
 
 
